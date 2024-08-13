@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-tls
+  annotations:
+    cert-manager.io/issuer: "issuer_name"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+      - [grafana.your_domain.example]
+    secretName: [tls_certificate]
+  rules:
+  - host: [grafana.your_domain.example]
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: grafana
+            port:
+              number: 3000
